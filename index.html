@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Share Links I/O</title>
+        <style>
+         *{
+             margin:0px;
+             padding:2px;
+         }
+         body{
+             text-align: center;
+         }
+         h1{
+             color: #ffffff;
+             background: #2a65d0;
+             border-radius: 2%;
+         }
+         #target>a{
+             font-weight: bold;
+             font-size: 1.2em;
+             color: #005bff;
+         }
+         #img>img{
+             border-color: #2a65d0;
+             border-width: 0.15em;
+             border-style: groove;
+             padding: 0;
+             border-radius: 2%;
+         }
+         #foot{
+             position: absolute;
+             bottom: 0.2em;
+             right: 0.2em;
+             color: #2a65d0;
+             text-decoration: none;
+         }
+         p{
+             margin: 2em 0;
+         }
+        </style>
+        <script>
+         var shorten = location.pathname.indexOf('.') != -1;
+         var request = new XMLHttpRequest();
+         request.onload = function() {
+             if (request.status >= 200 && request.status < 400) {
+                 var link = request.responseText;
+                 var target = document.querySelector('#target>a')
+                 if(shorten){
+                     link = location.protocol + '//' + location.host + '/' + link;
+                     target.href = link;
+                     target.innerHTML = link;
+                     document.querySelector('#img>img')
+                             .src='http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=' + link + '&chld=H|0';                     
+                 }else{
+                     target.href = link;
+                     target.innerHTML = link;
+                 }
+             } else {
+                 alert('Something went wrong, let me know?\nawesomevito@live.com');
+             }
+         };
+         request.onerror = function() {
+             alert('Connection Error.');
+         };
+         function init(){
+             if (shorten){
+                 request.open('POST', '/api', true);
+                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                 request.send('url=' + location.pathname.slice(1));
+             }else{
+                 request.open('GET', '/api?id='+location.pathname.slice(1), true);
+                 request.send();
+             }
+         }
+        </script>
+    </head>
+    <body onload="init();">
+        <h1>Share Links I/O</h1>
+        <p id="target">
+            <a>loading for you...</a>
+        </p>
+        <p id="img">
+            <img alt="QRCode">    
+        </p>
+        <a id="foot" href="/">slks.io ❤</a>
+    </body>
+</html>
