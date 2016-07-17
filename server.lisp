@@ -8,23 +8,32 @@
 ;; Removed i I l o O 0 for better reading experience
 (defvar *alphabet* "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ123456789")
 
+(defun test-timeout ()
+  (handler-case (sb-ext:with-timeout 2 (sleep 10))
+    (condition () "sb-ext:with-timeout works fine!")
+    (:no-error (r) (format nil "no timeout, result ~S" r))))
+
 (defun number->string(num)
-  (if (equal num 0)
-      (subseq *alphabet* 0 1)
-      (do* ((seq-start 0 (cadr (multiple-value-list (floor number (length *alphabet*)))))
-            (seq-end 0 (+ 1 seq-start))
-            (seqs "" (concatenate 'string (subseq *alphabet* seq-start seq-end) seqs))
-            (number num (car (multiple-value-list (floor (/ number (length *alphabet*)))))))
-           ((equal number 0) seqs))))
+  (handler-case
+      (if (equal num 0)
+          (subseq *alphabet* 0 1)
+          (do* ((seq-start 0 (cadr (multiple-value-list (floor number (length *alphabet*)))))
+                (seq-end 0 (+ 1 seq-start))
+                (seqs "" (concatenate 'string (subseq *alphabet* seq-start seq-end) seqs))
+                (number num (car (multiple-value-list (floor (/ number (length *alphabet*)))))))
+               ((equal number 0) seqs)))
+    (condition () nil)))
 
 (defun string->number(str)
-  (let ((i 0))
-    (map 'string
-         #'(lambda (c)
-             (setf i (+ (* i (length *alphabet*)) (position c *alphabet*)))
-             c)
-         str)
-    i))
+  (handler-case
+      (let ((i 0))
+        (map 'string
+             #'(lambda (c)
+                 (setf i (+ (* i (length *alphabet*)) (position c *alphabet*)))
+                 c)
+             str)
+        i)
+    (condition () nil)))
 
 (defun red-next-int (name &optional (default 1))
   (red:incrby name default))
