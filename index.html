@@ -94,7 +94,7 @@
                  }else{
                      if(link.length > 0){
                          if(!(link.startsWith('http://') || link.startsWith('https://') || link.startsWith('ftp://'))){
-                             link = link + 'http://';
+                             link = 'http://' + link;
                          }
                          target.href = link;
                          target.innerHTML = link;
