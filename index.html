@@ -28,6 +28,7 @@
              border-style: groove;
              padding: 0;
              border-radius: 2%;
+             display:none;
          }
          #foot{
              position: absolute;
@@ -51,8 +52,9 @@
                      link = location.protocol + '//' + location.host + '/' + link;
                      target.href = link;
                      target.innerHTML = link;
-                     document.querySelector('#img>img')
-                             .src='http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=' + link + '&chld=H|0';                     
+                     var img = document.querySelector('#img>img');
+                     img.src='http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=' + link + '&chld=H|0';
+                     img.style.display = 'block';
                  }else{
                      target.href = link;
                      target.innerHTML = link;
