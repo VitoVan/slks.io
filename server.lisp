@@ -1,5 +1,7 @@
+(defpackage #:slks-io
+  (:use #:cl ))
+(in-package #:slks-io)
 (ql:quickload '(:woo :cl-json :cl-redis :ningle :clack))
-
 ;; Connect to redis
 (redis:connect)
 
