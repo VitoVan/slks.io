@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Share Links I/O</title>
+        <style>
+         *{
+             margin:0px;
+             padding:2px;
+         }
+         body{
+             text-align: center;
+             font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+         }
+         h1{
+             color: #ffffff;
+             background: #2a65d0;
+             border-radius: 2%;
+         }
+         h1>a{
+             color: white;
+             text-decoration: none;             
+         }
+         p.link{
+             color: #717171;
+             border-width: 0.1em;
+             border-color: black;
+             border-style: solid;
+             margin: 0.3em 0;
+         }
+         p.link > b {
+             color: black;
+         }
+        </style>
+    </head>
+    <body>
+        <h1><a href="/">Share Links I/O</a></h1>
+        <br>
+        <h4>Yet another URL shortener</h4>
+        <br>
+        <p class="link">http://www.example.com/here-is-a-very-long-url-which-you-wanna-make-it-shorter</p>
+        <p>Prefixed it with `slks.io/`</p>
+        <p class="link"><b>slks.io/</b>http://www.example.com/here-is-a-very-long-url-which-you-wanna-make-it-shorter</p>
+        <p>Then you got: <a href="http://slks.io/e">slks.io/e</a></p>
+        <br>
+        <img src="http://www.lisperati.com/lisplogo_warning2_256.png">
+    </body>
+</html>

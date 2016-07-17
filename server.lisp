@@ -77,7 +77,7 @@
 (defvar *app* (make-instance 'ningle:<app>))
 
 (setf (ningle:route *app* "/")
-      "Welcome!")
+      (file-to-string #p"default.html"))
 
 (setf (ningle:route *app* "/api" :method :post)
       #'api-set-handler)
