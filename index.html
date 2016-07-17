@@ -22,12 +22,24 @@
              font-size: 1.2em;
              color: #005bff;
          }
+         #target>a[href="#404"]{
+             font-size: 6em;
+             text-decoration: none;
+         }
+         #target>a[href="#404"]:after{
+             content: '(Not Found)';
+             font-size: 1rem;
+             color: #cd0000;
+             display: block;
+         }
          #img>img{
              border-color: #2a65d0;
              border-width: 0.15em;
              border-style: groove;
              padding: 0;
              border-radius: 2%;
+             width: 300px;
+             height: 300px;             
              display:none;
          }
          #foot{
@@ -42,6 +54,12 @@
          }
         </style>
         <script>
+         if (!String.prototype.startsWith) {
+             String.prototype.startsWith = function(searchString, position){
+                 position = position || 0;
+                 return this.substr(position, searchString.length) === searchString;
+             };
+         }
          var shorten = location.pathname.indexOf('.') != -1;
          var request = new XMLHttpRequest();
          request.onload = function() {
@@ -53,11 +71,37 @@
                      target.href = link;
                      target.innerHTML = link;
                      var img = document.querySelector('#img>img');
+                     /* Load QRCode*/
                      img.src='http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=' + link + '&chld=H|0';
-                     img.style.display = 'block';
+                     img.onload = function(){
+                         img.style.display = 'inline-block';
+                     }
+                     /* for poor Chinese, they can't use Google API */
+                     function CNQR() {
+                         img.src = 'http://qr.topscan.com/api.php?text=' + link + '&w=300&m=5'
+                     }
+                     setTimeout(function(){
+                         if ('naturalHeight' in img) {
+                             if (img.naturalHeight + img.naturalWidth === 0) {
+                                 CNQR();
+                                 return;
+                             }
+                         } else if (img.width + img.height == 0) {
+                             CNQR();
+                             return;
+                         }
+                     },5000);
                  }else{
-                     target.href = link;
-                     target.innerHTML = link;
+                     if(link.length > 0){
+                         if(!(link.startsWith('http://') || link.startsWith('https://') || link.startsWith('ftp://'))){
+                             link += 'http://';
+                         }
+                         target.href = link;
+                         target.innerHTML = link;
+                     }else{
+                         target.href = '#404';
+                         target.innerHTML = '404';
+                     }
                  }
              } else {
                  alert('Something went wrong, let me know?\nawesomevito@live.com');
